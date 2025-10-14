@@ -11,9 +11,9 @@
     <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
-    <header class="site-hero">
+    <header id="top" class="site-hero">
       <div class="hero-inner">
-        <img src="Images/pfp.png" alt="June Hobart" class="avatar" />
+        <img src="Images/pfp.png" alt="pfp" class="avatar" />
         <div class="text">
           <h1 class="name">June Hobart</h1>
           <div class="meta">
@@ -28,21 +28,44 @@
       </div>
     </header>
     <nav class="toc" aria-label="Table of contents">
-      <a href="#section-1"><span class="sr-only">Section 1</span></a>
-      <a href="#section-2"><span class="sr-only">Section 2</span></a>
-      <a href="#section-3"><span class="sr-only">Section 3</span></a>
-      <a href="#section-4"><span class="sr-only">Section 4</span></a>
+      <a class="toc-link" href="#top"><span class="bar"></span><span class="label">Overview</span></a>
+      <a class="toc-link" href="#section-2"><span class="bar"></span><span class="label">Projects</span></a>
+      <a class="toc-link" href="#section-3"><span class="bar"></span><span class="label">About</span></a>
+      <a class="toc-link" href="#contact"><span class="bar"></span><span class="label">Contact</span></a>
     </nav>
     <main class="page-content">
       <section id="section-1" class="section"></section>
       <section id="section-2" class="section"></section>
       <section id="section-3" class="section"></section>
-      <section id="section-4" class="section"></section>
+      <footer id="contact" class="contact">
+        <div class="contact-inner">
+          <h2 class="contact-title">Contact</h2>
+          <div class="contact-actions">
+            <a href="mailto:june.r.hobart@gmail.com" class="icon-btn" aria-label="Email">
+              <img src="Images/icon-email.png" alt="" />
+            </a>
+            <a href="https://discord.com/users/1131239669225488476" class="icon-btn" target="_blank" rel="noopener noreferrer" aria-label="Discord">
+              <img src="Images/icon-discord.png" alt="" />
+            </a>
+            <a href="https://github.com/junrhobart" class="icon-btn" target="_blank" rel="noopener noreferrer" aria-label="GitHub">
+              <img src="Images/icon-github.png" alt="" />
+            </a>
+          </div>
+        </div>
+      </footer>
     </main>
     <script>
       (function() {
+        // Always start at the top on reload/navigation
+        if ('scrollRestoration' in history) { history.scrollRestoration = 'manual'; }
+        window.addEventListener('load', function() {
+          window.scrollTo({ top: 0, left: 0, behavior: 'instant' in window ? 'instant' : 'auto' });
+        });
+
         const links = Array.from(document.querySelectorAll('.toc a'));
-        const sections = links.map(a => document.querySelector(a.getAttribute('href')));
+        const sections = links
+          .map(a => document.querySelector(a.getAttribute('href')))
+          .filter(Boolean);
         const observer = new IntersectionObserver((entries) => {
           entries.forEach(entry => {
             if (entry.isIntersecting) {
@@ -52,6 +75,27 @@
           });
         }, { rootMargin: '-40% 0px -55% 0px', threshold: 0 });
         sections.forEach(s => s && observer.observe(s));
+
+        function activateTopIfAtTop() {
+          if (window.scrollY <= 2) {
+            links.forEach(l => l.classList.toggle('active', l.getAttribute('href') === '#top'));
+          }
+        }
+        activateTopIfAtTop();
+        window.addEventListener('scroll', activateTopIfAtTop, { passive: true });
+
+        // Touch-friendly expansion: expand labels briefly on tap
+        const toc = document.querySelector('.toc');
+        let collapseTimer = null;
+        function expandTemporarily() {
+          toc.classList.add('expanded');
+          if (collapseTimer) clearTimeout(collapseTimer);
+          collapseTimer = setTimeout(() => toc.classList.remove('expanded'), 2500);
+        }
+        if (window.matchMedia && !window.matchMedia('(hover: hover)').matches) {
+          toc.addEventListener('touchstart', expandTemporarily, { passive: true });
+          toc.addEventListener('click', expandTemporarily);
+        }
       })();
     </script>
   </body>

@@ -2,6 +2,7 @@
 * { box-sizing: border-box; }
 html, body { height: 100%; }
 html { scroll-behavior: smooth; }
+a { color: inherit; }
 :root {
   --bg: #ffffff;
   --text: #0f172a;
@@ -13,12 +14,12 @@ html { scroll-behavior: smooth; }
 }
 @media (prefers-color-scheme: dark) {
   :root {
-    --bg: #0f1115; /* modern dark gray */
-    --text: #eceff4;
-    --muted: #a0a7b4;
-    --surface: #0f1115;
+    --bg: #0e0e10; /* neutral dark gray */
+    --text: #e6e7e9;
+    --muted: #a6a8ad;
+    --surface: #0e0e10;
     --card: transparent;
-    --border: #23262d;
+    --border: #2a2c31;
     --shadow: 0 8px 28px rgba(0, 0, 0, 0.5);
   }
 }
@@ -108,29 +109,89 @@ body {
   left: 20px;
   display: flex;
   flex-direction: column;
-  gap: 14px;
+  gap: 10px; /* closer together */
 }
 .toc a {
   position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 28px; /* larger click target */
+  padding: 6px 8px;
+  border-radius: 8px;
+  text-decoration: none; /* remove underline */
+  color: inherit;
+}
+.toc a .bar {
   display: block;
-  width: 30px;
+  width: 36px;
   height: 3px;
   background: rgba(255, 255, 255, 0.9);
   border-radius: 2px;
   transition: width 160ms ease, opacity 160ms ease, transform 160ms ease;
-  opacity: 0.8;
+  opacity: 0.85;
 }
-.toc a:hover, .toc a:focus-visible { width: 54px; opacity: 1; transform: translateX(2px); outline: none; }
-.toc a.active { width: 54px; opacity: 1; }
+.toc:hover a .bar, .toc.expanded a .bar { width: 56px; opacity: 1; }
+.toc a:hover .bar, .toc a:focus-visible .bar { transform: translateX(2px); outline: none; }
+.toc a:hover .bar { width: 64px; } /* expand a bit on hover */
+.toc a.active .bar { width: 64px; opacity: 1; }
+.toc a .label {
+  color: var(--muted);
+  font-size: 14px;
+  opacity: 0;
+  transition: opacity 160ms ease;
+  pointer-events: none;
+  text-decoration: none;
+  transform: translateX(0) scale(0.98);
+}
+.toc:hover a .label, .toc.expanded a .label, .toc a.active .label { opacity: 1; transform: translateX(2px) scale(1); }
+.toc a:hover .label, .toc a:focus-visible .label { transform: translateX(4px) scale(1.06); }
 
 .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0; }
 
 /* Placeholder sections */
-.section { padding: 64px 0; }
+.section { padding: 36px 0; }
 
 @media (max-width: 640px) {
-  .toc { display: none; }
-  .page-content { padding: 16px; }
+  .toc { left: 12px; gap: 12px; }
+  .toc a { min-height: 36px; padding: 8px 10px; }
+  .toc a .bar { width: 32px; }
+  .toc:hover a .bar, .toc.expanded a .bar, .toc a.active .bar { width: 46px; }
+  .toc a:hover .bar { width: 54px; }
+  .toc:hover a .label, .toc.expanded a .label { opacity: 1; }
+  .page-content { padding: 16px 16px 16px 72px; }
+}
+
+/* Contact footer */
+.contact {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 96px; /* larger footer bar */
+  display: flex;
+  align-items: center;
+  background: rgba(14,14,16,0.85);
+  border-top: 1px solid var(--border);
+  backdrop-filter: saturate(140%) blur(6px);
+  z-index: 10;
+}
+.contact::before { content: ""; position: absolute; top: 0; left: 0; right: 0; height: 1px; background: linear-gradient(90deg, transparent, rgba(255,255,255,0.14), transparent); }
+.contact-inner { max-width: 1040px; margin: 0 auto; width: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px; }
+.contact-title { margin: 0; font-size: 15px; color: var(--muted); letter-spacing: 0.02em; }
+.contact-actions { display: inline-flex; gap: 16px; align-items: center; }
+.icon-btn { width: 44px; height: 44px; display: inline-flex; align-items: center; justify-content: center; border-radius: 10px; border: none; background: transparent; transition: transform 120ms ease, opacity 120ms ease; }
+.icon-btn:hover { transform: translateY(-1px) scale(1.04); opacity: 1; }
+.icon-btn img { width: 28px; height: 28px; opacity: 0.95; object-fit: contain; }
+
+/* Ensure content isn't hidden behind bottom bar */
+.page-content { padding-bottom: 176px; }
+
+@media (max-width: 640px) {
+  .contact { height: 112px; }
+  .icon-btn { width: 52px; height: 52px; }
+  .icon-btn img { width: 32px; height: 32px; }
+  .page-content { padding-bottom: 200px; }
 }
 
 
