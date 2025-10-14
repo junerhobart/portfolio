@@ -13,42 +13,138 @@
   <body>
     <header id="top" class="site-hero">
       <div class="hero-inner">
-        <img src="Images/pfp.png" alt="pfp" class="avatar" />
+        <img src="Images/overview/pfp.png" alt="pfp" class="avatar" />
         <div class="text">
           <h1 class="name">June Hobart</h1>
           <div class="meta">
             <span class="location">
-              <img src="Images/location-icon.png" alt="" class="pin" />
+              <img src="Images/overview/location.png" alt="" class="pin" />
               <span>Madera, Portugal</span>
             </span>
             <span class="bullet" aria-hidden="true">•</span>
             <span class="role">Prompt Engineer</span>
+              <span class="bullet" aria-hidden="true">•</span>
+              <span class="age"><span id="age"></span></span>
           </div>
         </div>
       </div>
     </header>
     <nav class="toc" aria-label="Table of contents">
       <a class="toc-link" href="#top"><span class="bar"></span><span class="label">Overview</span></a>
-      <a class="toc-link" href="#section-2"><span class="bar"></span><span class="label">Projects</span></a>
+      <a class="toc-link" href="#section-2"><span class="bar"></span><span class="label">Experience</span></a>
       <a class="toc-link" href="#section-3"><span class="bar"></span><span class="label">About</span></a>
       <a class="toc-link" href="#contact"><span class="bar"></span><span class="label">Contact</span></a>
     </nav>
     <main class="page-content">
       <section id="section-1" class="section"></section>
-      <section id="section-2" class="section"></section>
+      <section id="section-2" class="section">
+        <div class="timeline">
+          <div class="timeline-tabs" role="tablist" aria-label="Experience Tabs">
+            <button class="tab active" role="tab" aria-selected="true" data-target="#edu">Education</button>
+            <button class="tab" role="tab" aria-selected="false" data-target="#work">Work</button>
+            <button class="tab" role="tab" aria-selected="false" data-target="#skills">Skills</button>
+          </div>
+          <div class="timeline-panels">
+            <div id="edu" class="panel active" role="tabpanel">
+              <article class="card">
+                <div class="card-header">
+                  <div class="dot"></div>
+                  <div class="meta">
+                    <h3 class="title">Acton Elementary School <span class="dates-inline">2017 – 2024</span></h3>
+                    <div class="sub">Pre‑K → 7th grade (skipped 8th)</div>
+                  </div>
+                </div>
+                <ul class="bullets">
+                  <li><b>Lego Robotics</b>: 4th → 7th grade; builder/tester; 3rd place at state (speed).</li>
+                  <li><b>Interests</b>: math and history; consistent Honor Roll.</li>
+                </ul>
+              </article>
+              <article class="card">
+                <div class="card-header">
+                  <div class="dot"></div>
+                  <div class="meta">
+                    <h3 class="title">University of Nebraska High School <span class="dates-inline">2025 – present</span></h3>
+                    <div class="sub">Independent, online high school program</div>
+                  </div>
+                </div>
+                <ul class="bullets">
+                  <li><b>Coursework</b>: Accelerated schedule while continuing personal engineering projects.</li>
+                </ul>
+              </article>
+            </div>
+            <div id="work" class="panel" role="tabpanel" hidden>
+              <article class="card">
+                <div class="card-header">
+                  <div class="dot"></div>
+                  <div class="meta">
+                    <h3 class="title">Roblox Freelance Development <span class="dates-inline">Early</span></h3>
+                    <div class="sub">Gameplay systems, UI, and moderation tools</div>
+                  </div>
+                </div>
+                <ul class="bullets">
+                  <li><b>Roblox systems</b>: gameplay logic, UI flows, and moderation tooling.</li>
+                  <li><b>Process</b>: fast iteration, clear communication, on-time delivery.</li>
+                </ul>
+              </article>
+              <article class="card">
+                <div class="card-header">
+                  <div class="dot"></div>
+                  <div class="meta">
+                    <h3 class="title">Freelance Developer — Expanded <span class="dates-inline">Now</span></h3>
+                    <div class="sub">Discord bots • Minecraft mods • automation</div>
+                  </div>
+                </div>
+                <ul class="bullets">
+                  <li><b>Scope</b>: hundreds of clients across gaming and community tooling.</li>
+                  <li><b>Stack</b>: Discord bots, Minecraft mods, small web automations.</li>
+                </ul>
+              </article>
+            </div>
+            <div id="skills" class="panel is-skills" role="tabpanel" hidden>
+              <article class="card">
+                <div class="card-header">
+                  <div class="dot"></div>
+                  <div class="meta">
+                    <h3 class="title"><span class="icon-slot" aria-hidden="true"></span>Linux</h3>
+                    <div class="sub">Daily driver; comfortable on servers and CLI.</div>
+                  </div>
+                </div>
+              </article>
+              <article class="card">
+                <div class="card-header">
+                  <div class="dot"></div>
+                  <div class="meta">
+                    <h3 class="title"><span class="icon-slot" aria-hidden="true"></span>Docker</h3>
+                    <div class="sub">Compose setups; containerized services for projects.</div>
+                  </div>
+                </div>
+              </article>
+              <article class="card">
+                <div class="card-header">
+                  <div class="dot"></div>
+                  <div class="meta">
+                    <h3 class="title"><span class="icon-slot" aria-hidden="true"></span>Git & GitHub</h3>
+                    <div class="sub">Branching, PRs, issues; small automation.</div>
+                  </div>
+                </div>
+              </article>
+            </div>
+          </div>
+        </div>
+      </section>
       <section id="section-3" class="section"></section>
       <footer id="contact" class="contact">
         <div class="contact-inner">
           <h2 class="contact-title">Contact</h2>
           <div class="contact-actions">
             <a href="mailto:june.r.hobart@gmail.com" class="icon-btn" aria-label="Email">
-              <img src="Images/icon-email.png" alt="" />
+              <img src="Images/footer/email.png" alt="" />
             </a>
             <a href="https://discord.com/users/1131239669225488476" class="icon-btn" target="_blank" rel="noopener noreferrer" aria-label="Discord">
-              <img src="Images/icon-discord.png" alt="" />
+              <img src="Images/footer/discord.png" alt="" />
             </a>
             <a href="https://github.com/junrhobart" class="icon-btn" target="_blank" rel="noopener noreferrer" aria-label="GitHub">
-              <img src="Images/icon-github.png" alt="" />
+              <img src="Images/footer/github.png" alt="" />
             </a>
           </div>
         </div>
@@ -73,7 +169,7 @@
               links.forEach(l => l.classList.toggle('active', l.getAttribute('href') === id));
             }
           });
-        }, { rootMargin: '-40% 0px -55% 0px', threshold: 0 });
+        }, { rootMargin: '-12% 0px -70% 0px', threshold: 0 });
         sections.forEach(s => s && observer.observe(s));
 
         function activateTopIfAtTop() {
@@ -96,6 +192,43 @@
           toc.addEventListener('touchstart', expandTemporarily, { passive: true });
           toc.addEventListener('click', expandTemporarily);
         }
+      })();
+    </script>
+    <script>
+      // Tabs behaviour for the timeline
+      (function(){
+        const container = document.querySelector('.timeline');
+        if (!container) return;
+        const tabs = Array.from(container.querySelectorAll('.tab'));
+        const panels = Array.from(container.querySelectorAll('.panel'));
+        tabs.forEach(tab => tab.addEventListener('click', () => {
+          tabs.forEach(t => { t.classList.remove('active'); t.setAttribute('aria-selected','false'); });
+          panels.forEach(p => { p.classList.remove('active'); p.hidden = true; });
+          const targetSel = tab.getAttribute('data-target');
+          const target = container.querySelector(targetSel);
+          if (target) { target.hidden = false; target.classList.add('active'); }
+          tab.classList.add('active'); tab.setAttribute('aria-selected','true');
+        }));
+
+        // Reveal animations on scroll for cards
+        const reveal = new IntersectionObserver((entries) => {
+          entries.forEach(entry => {
+            if (entry.isIntersecting) entry.target.classList.add('in-view');
+          });
+        }, { rootMargin: '0px 0px -10% 0px', threshold: 0 });
+        container.querySelectorAll('.card').forEach(c => reveal.observe(c));
+      })();
+    </script>
+    <script>
+      // Compute age relative to June 1, 2012
+      (function(){
+        var el = document.getElementById('age');
+        if (!el) return;
+        var birth = new Date('2012-06-01T00:00:00Z');
+        var now = new Date();
+        var diff = now - birth;
+        var ageYears = Math.floor(diff / (365.2425 * 24 * 60 * 60 * 1000));
+        el.textContent = ageYears + ' years old';
       })();
     </script>
   </body>

@@ -152,6 +152,75 @@ body {
 /* Placeholder sections */
 .section { padding: 36px 0; }
 
+/* Timeline */
+.timeline { max-width: 1040px; margin: 0 auto; padding: 0 0 8px 0; }
+.timeline-tabs { display: flex; justify-content: center; gap: 16px; margin: 0; border-bottom: 1px solid var(--border); position: sticky; top: 0; z-index: 2; background: var(--bg); }
+/* Use the same line as the timeline track */
+.timeline-tabs::after { content: ''; position: absolute; left: 24px; right: 24px; bottom: -1px; height: 2px; background: linear-gradient(90deg, rgba(255,255,255,0), rgba(255,255,255,0.14), rgba(255,255,255,0)); }
+.timeline-tabs .tab { padding: 10px 6px; background: transparent; border: none; color: var(--muted); font-weight: 600; cursor: pointer; position: relative; }
+.timeline-tabs .tab.active { color: var(--text); }
+.timeline-tabs .tab.active::after { content: ""; position: absolute; left: 4px; right: 4px; bottom: -1px; height: 2px; background: rgba(255,255,255,0.7); border-radius: 2px; }
+.timeline-panels { display: block; }
+.panel[hidden] { display: none !important; }
+.timeline-nav { display: none; }
+.timeline-list { display: block; }
+.timeline-label { display: none; }
+
+/* Attach the timeline to the same underline */
+.panel { position: relative; padding: 24px 12px 8px 56px; border: 0; border-radius: 16px; background: transparent; box-shadow: none; }
+.panel::before { content: ""; position: absolute; left: 32px; top: -1px; bottom: 6px; width: 2px; background: linear-gradient(180deg, rgba(255,255,255,0.14), rgba(255,255,255,0.04)); }
+
+.card { position: relative; padding: 8px 8px 12px 8px; border: 0; border-radius: 10px; background: transparent; box-shadow: none; transform: translateY(6px); opacity: 0; transition: transform 220ms ease, opacity 220ms ease, background 160ms ease; }
+.card.in-view { transform: translateY(0); opacity: 1; }
+.card + .card { margin-top: 6px; border-top: 1px solid rgba(255,255,255,0.06); }
+.card:hover { background: rgba(255,255,255,0.02); }
+.card-header { position: relative; padding-left: 28px; margin-bottom: 6px; display: flex; align-items: center; gap: 8px; }
+.card-header .dot { position: absolute; left: -28px; top: -6px; width: 10px; height: 10px; border-radius: 50%; background: #dcdcdc; box-shadow: none; border: 1px solid var(--border); }
+.card:not(:last-child)::after { content: ""; position: absolute; left: -23px; top: 18px; width: 2px; height: calc(100% + 12px); background: var(--border); }
+.card-header .meta { display: flex; flex-direction: column; }
+.card-header .card-icon { width: 40px; height: 40px; border-radius: 50%; object-fit: cover; border: 1px solid var(--border); box-shadow: none; background: rgba(255,255,255,0.02); transform: translateY(-2px); }
+.card-header .dates { color: var(--muted); font-size: 12px; }
+.dates-inline { color: var(--muted); font-weight: 600; font-size: 12px; margin-left: 8px; }
+.card-header .title { margin: 0; font-size: 18px; }
+.card-header .sub { color: var(--muted); font-size: 14px; }
+.bullets { margin: 10px 0 0 0; padding-left: 20px; font-size: 14px; line-height: 1.6; }
+.bullets li { margin-bottom: 6px; }
+.bullets b, .bullets strong { color: var(--text); }
+.badge { display: inline-block; margin-left: 6px; padding: 2px 6px; border: 1px solid var(--border); border-radius: 999px; font-size: 11px; color: var(--muted); }
+
+/* slot where future per-entry images can sit */
+.img-slot { width: 44px; height: 44px; border-radius: 8px; background: rgba(255,255,255,0.03); border: 1px solid var(--border); display: inline-block; }
+
+@media (max-width: 640px) {
+  .timeline-tabs { grid-template-columns: 1fr 1fr 1fr; }
+  .card-header .title { font-size: 16px; }
+}
+
+/* Desktop: horizontal number-line presentation */
+@media (min-width: 900px) {
+  .panel { padding: 20px 12px 10px 12px; display: flex; gap: 12px; align-items: flex-start; }
+  /* remove secondary horizontal bar; use tabs underline as the number line */
+  .panel::before { display: none; }
+  .panel .card { flex: 1; padding: 10px; border: 0; border-radius: 10px; background: transparent; box-shadow: none; margin-top: 0; }
+  /* short vertical tick from the number line (touching the underline) */
+  .panel .card::after { content: ""; position: absolute; top: -20px; left: 50%; transform: translateX(-50%); width: 2px; height: 20px; background: var(--border); }
+  .panel .card-header { padding-left: 0; margin-bottom: 6px; }
+  .panel .card-header .dot { display: none; }
+  .panel.is-other { display: block; }
+}
+
+/* age style */
+.age { color: var(--muted); position: relative; top: 4px; }
+
+/* Skills grid (Other panel) */
+.skills-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 12px; }
+.skill { padding: 10px; border: 1px solid var(--border); border-radius: 12px; background: rgba(255,255,255,0.02); }
+.skill-head { display: flex; align-items: center; gap: 10px; margin-bottom: 6px; }
+.skill-icon { width: 28px; height: 28px; border-radius: 6px; object-fit: cover; border: 1px solid var(--border); }
+.skill-title { font-weight: 700; }
+.skill-meta { color: var(--muted); font-size: 12px; }
+.skill-body { color: var(--muted); font-size: 14px; }
+
 @media (max-width: 640px) {
   .toc { left: 12px; gap: 12px; }
   .toc a { min-height: 36px; padding: 8px 10px; }
@@ -193,5 +262,15 @@ body {
   .icon-btn img { width: 32px; height: 32px; }
   .page-content { padding-bottom: 200px; }
 }
+
+/* Left TOC stability */
+.toc { z-index: 3; }
+
+.is-skills .card { background: transparent; border: 0; }
+
+/* Skills panel tweaks */
+.is-skills::before { display: none; }
+.is-skills .card::after { display: none; }
+.icon-slot { display: inline-block; width: 20px; height: 20px; border-radius: 4px; border: 1px solid var(--border); background: rgba(255,255,255,0.04); margin-right: 8px; vertical-align: -3px; }
 
 
