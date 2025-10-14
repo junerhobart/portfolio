@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="color-scheme" content="light dark" />
+    <title>June Hobart</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <header class="site-hero">
+      <div class="hero-inner">
+        <img src="Images/pfp.png" alt="June Hobart" class="avatar" />
+        <div class="text">
+          <h1 class="name">June Hobart</h1>
+          <div class="meta">
+            <span class="location">
+              <img src="Images/location-icon.png" alt="" class="pin" />
+              <span>Madera, Portugal</span>
+            </span>
+            <span class="bullet" aria-hidden="true">•</span>
+            <span class="role">Prompt Engineer</span>
+          </div>
+        </div>
+      </div>
+    </header>
+    <nav class="toc" aria-label="Table of contents">
+      <a href="#section-1"><span class="sr-only">Section 1</span></a>
+      <a href="#section-2"><span class="sr-only">Section 2</span></a>
+      <a href="#section-3"><span class="sr-only">Section 3</span></a>
+      <a href="#section-4"><span class="sr-only">Section 4</span></a>
+    </nav>
+    <main class="page-content">
+      <section id="section-1" class="section"></section>
+      <section id="section-2" class="section"></section>
+      <section id="section-3" class="section"></section>
+      <section id="section-4" class="section"></section>
+    </main>
+    <script>
+      (function() {
+        const links = Array.from(document.querySelectorAll('.toc a'));
+        const sections = links.map(a => document.querySelector(a.getAttribute('href')));
+        const observer = new IntersectionObserver((entries) => {
+          entries.forEach(entry => {
+            if (entry.isIntersecting) {
+              const id = '#' + entry.target.id;
+              links.forEach(l => l.classList.toggle('active', l.getAttribute('href') === id));
+            }
+          });
+        }, { rootMargin: '-40% 0px -55% 0px', threshold: 0 });
+        sections.forEach(s => s && observer.observe(s));
+      })();
+    </script>
+  </body>
+</html>
+
+
