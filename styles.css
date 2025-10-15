@@ -4,12 +4,12 @@ html, body { height: 100%; }
 html { scroll-behavior: smooth; }
 a { color: inherit; }
 :root {
-  --bg: #0e0e10;
-  --text: #e6e7e9;
-  --muted: #a6a8ad;
-  --surface: #0e0e10;
+  --bg: #121317;
+  --text: #e9eaee;
+  --muted: #b0b3b9;
+  --surface: #14161b;
   --card: transparent;
-  --border: #2a2c31;
+  --border: #31343b;
   --shadow: 0 8px 28px rgba(0, 0, 0, 0.5);
 }
 /* Force dark mode: remove light defaults and media-based switching */

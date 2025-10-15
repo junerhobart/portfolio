@@ -273,15 +273,17 @@
           ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
           initPoints();
         }
+        function rnd(min, max){ return Math.random() * (max - min) + min; }
+        function clamp(v, min, max){ return v < min ? min : v > max ? max : v; }
         function initPoints(){
-          const density = Math.min(100, Math.floor((width * height) / 22000));
+          const density = Math.min(120, Math.floor((width * height) / 22000));
           points = [];
           for (let i = 0; i < density; i++) {
             points.push({
               x: Math.random() * width,
               y: Math.random() * height,
-              vx: (Math.random() - 0.5) * 0.12,
-              vy: (Math.random() - 0.5) * 0.12
+              vx: rnd(-0.06, 0.06),
+              vy: rnd(-0.06, 0.06)
             });
           }
         }
@@ -294,12 +296,14 @@
             p.x += p.vx; p.y += p.vy;
             if (p.x < 0 || p.x > width) p.vx *= -1;
             if (p.y < 0 || p.y > height) p.vy *= -1;
+            // clamp speed continuously to avoid zips
+            p.vx = clamp(p.vx, -0.08, 0.08);
+            p.vy = clamp(p.vy, -0.08, 0.08);
           }
           // draw
           ctx.lineWidth = 1;
           for (let i = 0; i < points.length; i++){
             const p = points[i];
-            // connect near
             for (let j = i + 1; j < points.length; j++){
               const q = points[j];
               const d2 = dist2(p, q);
@@ -309,17 +313,14 @@
                 ctx.beginPath(); ctx.moveTo(p.x, p.y); ctx.lineTo(q.x, q.y); ctx.stroke();
               }
             }
-            // mouse connection
             const m2 = dist2(p, mouse);
             if (m2 < 200*200){
               const a = 1 - m2 / (200*200);
-              ctx.strokeStyle = `rgba(255,255,255,${0.2 * a})`;
+              ctx.strokeStyle = `rgba(255,255,255,${0.18 * a})`;
               ctx.beginPath(); ctx.moveTo(p.x, p.y); ctx.lineTo(mouse.x, mouse.y); ctx.stroke();
-              // gentler attraction to mouse
-              const dx = mouse.x - p.x, dy = mouse.y - p.y; p.vx += dx * 0.00015; p.vy += dy * 0.00015;
+              const dx = mouse.x - p.x, dy = mouse.y - p.y; p.vx += dx * 0.00006; p.vy += dy * 0.00006;
             }
-            // draw point
-            ctx.fillStyle = 'rgba(255,255,255,0.6)';
+            ctx.fillStyle = 'rgba(255,255,255,0.55)';
             ctx.beginPath(); ctx.arc(p.x, p.y, 1.5, 0, Math.PI*2); ctx.fill();
           }
           requestAnimationFrame(step);
