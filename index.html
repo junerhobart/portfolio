@@ -4,10 +4,12 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="color-scheme" content="light dark" />
-    <title>June Hobart</title>
+    <title>June's Portfolio</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet" />
+    <link rel="icon" href="Images/overview/pfp.png" type="image/png" sizes="32x32" />
+    <link rel="apple-touch-icon" href="Images/overview/pfp.png" />
     <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
@@ -33,7 +35,7 @@
     <nav class="toc" aria-label="Table of contents">
       <a class="toc-link" href="#top"><span class="bar"></span><span class="label">Overview</span></a>
       <a class="toc-link" href="#section-2"><span class="bar"></span><span class="label">Experience</span></a>
-      <a class="toc-link" href="#contact"><span class="bar"></span><span class="label">Contact</span></a>
+      <a class="toc-link" href="#contact-end"><span class="bar"></span><span class="label">Contact</span></a>
     </nav>
     <main class="page-content">
       <section id="section-1" class="section"></section>
@@ -152,6 +154,8 @@
         </div>
       </section>
 
+      
+
       <footer id="contact" class="contact">
         <div class="contact-inner">
           <h2 class="contact-title">Contact</h2>
@@ -168,6 +172,7 @@
           </div>
         </div>
       </footer>
+      <div id="contact-end"></div>
     </main>
     <script>
       (function() {
@@ -213,6 +218,15 @@
         if (window.matchMedia && !window.matchMedia('(hover: hover)').matches) {
           toc.addEventListener('touchstart', expandTemporarily, { passive: true });
           toc.addEventListener('click', expandTemporarily);
+        }
+
+        // Scroll to absolute bottom on Contact click
+        const contactLink = links.find(l => l.getAttribute('href') === '#contact-end');
+        if (contactLink) {
+          contactLink.addEventListener('click', function(e){
+            e.preventDefault();
+            window.scrollTo({ top: document.documentElement.scrollHeight, behavior: 'smooth' });
+          });
         }
       })();
     </script>
