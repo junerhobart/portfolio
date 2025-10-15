@@ -11,6 +11,7 @@
     <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
+    <canvas id="bg-net" class="bg-net" aria-hidden="true"></canvas>
     <header id="top" class="site-hero">
       <div class="hero-inner">
         <img src="Images/overview/pfp.png" alt="pfp" class="avatar" />
@@ -23,8 +24,8 @@
             </span>
             <span class="bullet" aria-hidden="true">•</span>
             <span class="role">Prompt Engineer</span>
-              <span class="bullet" aria-hidden="true">•</span>
-              <span class="age"><span id="age"></span></span>
+            <span class="bullet" aria-hidden="true">•</span>
+            <span class="age"><span id="age"></span></span>
           </div>
         </div>
       </div>
@@ -32,7 +33,6 @@
     <nav class="toc" aria-label="Table of contents">
       <a class="toc-link" href="#top"><span class="bar"></span><span class="label">Overview</span></a>
       <a class="toc-link" href="#section-2"><span class="bar"></span><span class="label">Experience</span></a>
-      <a class="toc-link" href="#section-3"><span class="bar"></span><span class="label">About</span></a>
       <a class="toc-link" href="#contact"><span class="bar"></span><span class="label">Contact</span></a>
     </nav>
     <main class="page-content">
@@ -50,7 +50,7 @@
                 <div class="card-header">
                   <div class="dot"></div>
                   <div class="meta">
-                    <h3 class="title"><span class="icon-slot"><img src="Images/experience/linux.png" alt="" /></span>Linux</h3>
+                    <h3 class="title"><span class="icon-slot"><img class="icon-linux" src="Images/experience/linux.png" alt="" /></span>Linux</h3>
                     <div class="sub">Daily driver; comfortable on servers and CLI.</div>
                   </div>
                 </div>
@@ -59,7 +59,7 @@
                 <div class="card-header">
                   <div class="dot"></div>
                   <div class="meta">
-                    <h3 class="title"><span class="icon-slot"><img src="Images/experience/docker.png" alt="" /></span>Docker</h3>
+                    <h3 class="title"><span class="icon-slot"><img class="icon-docker" src="Images/experience/docker.png" alt="" /></span>Docker</h3>
                     <div class="sub">Compose setups; containerized services for projects.</div>
                   </div>
                 </div>
@@ -68,8 +68,35 @@
                 <div class="card-header">
                   <div class="dot"></div>
                   <div class="meta">
-                    <h3 class="title"><span class="icon-slot"><img src="Images/experience/git.png" alt="" /></span>Git & GitHub</h3>
+                    <h3 class="title"><span class="icon-slot"><img class="icon-git" src="Images/experience/git.png" alt="" /></span>Git & GitHub</h3>
                     <div class="sub">Branching, PRs, issues; small automation.</div>
+                  </div>
+                </div>
+              </article>
+              <article class="card">
+                <div class="card-header">
+                  <div class="dot"></div>
+                  <div class="meta">
+                    <h3 class="title"><span class="icon-slot"><img class="icon-claude" src="Images/experience/claude.png" alt="" /></span>Claude</h3>
+                    <div class="sub">Prompt engineering; structured outputs; API integration.</div>
+                  </div>
+                </div>
+              </article>
+              <article class="card">
+                <div class="card-header">
+                  <div class="dot"></div>
+                  <div class="meta">
+                    <h3 class="title"><span class="icon-slot"><img class="icon-cuda" src="Images/experience/cuda.png" alt="" /></span>CUDA</h3>
+                    <div class="sub">GPU programming; parallel computing basics.</div>
+                  </div>
+                </div>
+              </article>
+              <article class="card">
+                <div class="card-header">
+                  <div class="dot"></div>
+                  <div class="meta">
+                    <h3 class="title"><span class="icon-slot"><img class="icon-chatgpt" src="Images/experience/chatgpt.png" alt="" /></span>ChatGPT</h3>
+                    <div class="sub">Custom GPTs; workflow automation; chat completions.</div>
                   </div>
                 </div>
               </article>
@@ -124,7 +151,7 @@
           </div>
         </div>
       </section>
-      <section id="section-3" class="section"></section>
+
       <footer id="contact" class="contact">
         <div class="contact-inner">
           <h2 class="contact-title">Contact</h2>
@@ -154,7 +181,7 @@
         const sections = links.map(a => document.querySelector(a.getAttribute('href'))).filter(Boolean);
 
         function setActiveByViewport() {
-          const y = window.scrollY + 120; // top reference line
+          const y = window.scrollY + 120;
           let activeId = '#top';
           for (const s of sections) {
             const top = s.offsetTop;
@@ -205,13 +232,89 @@
           tab.classList.add('active'); tab.setAttribute('aria-selected','true');
         }));
 
-        // Reveal animations on scroll for cards
+        // Reveal animations on scroll for timeline cards
         const reveal = new IntersectionObserver((entries) => {
           entries.forEach(entry => {
             if (entry.isIntersecting) entry.target.classList.add('in-view');
           });
         }, { rootMargin: '0px 0px -10% 0px', threshold: 0 });
         container.querySelectorAll('.card').forEach(c => reveal.observe(c));
+      })();
+    </script>
+    <script>
+      // Full-screen particle network background
+      (function(){
+        const canvas = document.getElementById('bg-net');
+        if (!canvas) return;
+        const ctx = canvas.getContext('2d');
+        let width = 0, height = 0, dpr = Math.max(1, window.devicePixelRatio || 1);
+        const mouse = { x: -9999, y: -9999 };
+        let points = [];
+
+        function resize(){
+          width = window.innerWidth; height = window.innerHeight;
+          canvas.width = Math.floor(width * dpr);
+          canvas.height = Math.floor(height * dpr);
+          canvas.style.width = width + 'px'; canvas.style.height = height + 'px';
+          ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+          initPoints();
+        }
+        function initPoints(){
+          const density = Math.min(100, Math.floor((width * height) / 22000));
+          points = [];
+          for (let i = 0; i < density; i++) {
+            points.push({
+              x: Math.random() * width,
+              y: Math.random() * height,
+              vx: (Math.random() - 0.5) * 0.12,
+              vy: (Math.random() - 0.5) * 0.12
+            });
+          }
+        }
+
+        function dist2(a, b){ const dx = a.x - b.x, dy = a.y - b.y; return dx*dx + dy*dy; }
+        function step(){
+          ctx.clearRect(0,0,width,height);
+          // move
+          for (const p of points){
+            p.x += p.vx; p.y += p.vy;
+            if (p.x < 0 || p.x > width) p.vx *= -1;
+            if (p.y < 0 || p.y > height) p.vy *= -1;
+          }
+          // draw
+          ctx.lineWidth = 1;
+          for (let i = 0; i < points.length; i++){
+            const p = points[i];
+            // connect near
+            for (let j = i + 1; j < points.length; j++){
+              const q = points[j];
+              const d2 = dist2(p, q);
+              if (d2 < 140*140){
+                const a = 1 - d2 / (140*140);
+                ctx.strokeStyle = `rgba(255,255,255,${0.12 * a})`;
+                ctx.beginPath(); ctx.moveTo(p.x, p.y); ctx.lineTo(q.x, q.y); ctx.stroke();
+              }
+            }
+            // mouse connection
+            const m2 = dist2(p, mouse);
+            if (m2 < 200*200){
+              const a = 1 - m2 / (200*200);
+              ctx.strokeStyle = `rgba(255,255,255,${0.2 * a})`;
+              ctx.beginPath(); ctx.moveTo(p.x, p.y); ctx.lineTo(mouse.x, mouse.y); ctx.stroke();
+              // gentler attraction to mouse
+              const dx = mouse.x - p.x, dy = mouse.y - p.y; p.vx += dx * 0.00015; p.vy += dy * 0.00015;
+            }
+            // draw point
+            ctx.fillStyle = 'rgba(255,255,255,0.6)';
+            ctx.beginPath(); ctx.arc(p.x, p.y, 1.5, 0, Math.PI*2); ctx.fill();
+          }
+          requestAnimationFrame(step);
+        }
+        resize();
+        window.addEventListener('resize', resize);
+        window.addEventListener('pointermove', (e)=>{ mouse.x = e.clientX; mouse.y = e.clientY; }, { passive: true });
+        window.addEventListener('pointerleave', ()=>{ mouse.x = -9999; mouse.y = -9999; });
+        requestAnimationFrame(step);
       })();
     </script>
     <script>
@@ -228,5 +331,3 @@
     </script>
   </body>
 </html>
-
-
