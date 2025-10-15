@@ -102,8 +102,9 @@ body {
 /* Animate hero in */
 .site-hero { animation: fadeUp 700ms ease-out both; }
 @keyframes fadeUp { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
-.avatar { animation: popIn 600ms 120ms ease-out both; }
+.avatar { animation: popIn 600ms 120ms ease-out both, floatY 6s ease-in-out 1.2s infinite alternate; }
 @keyframes popIn { 0% { transform: scale(0.92); opacity: 0; } 100% { transform: scale(1); opacity: 1; } }
+@keyframes floatY { from { transform: translateY(0); } to { transform: translateY(-4px); } }
 
 /* Page content placeholder so page is scrollable */
 .page-content {
@@ -171,13 +172,30 @@ body {
 .timeline-tabs::after { content: ''; position: absolute; left: 24px; right: 24px; bottom: -1px; height: 2px; background: linear-gradient(90deg, rgba(255,255,255,0), rgba(255,255,255,0.14), rgba(255,255,255,0)); }
 .timeline-tabs .tab { padding: 10px 6px; background: transparent; border: none; color: var(--muted); font-weight: 800; letter-spacing: -0.01em; font-family: "Inter", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; cursor: pointer; position: relative; }
 .timeline-tabs .tab.active { color: var(--text); }
-.timeline-tabs .tab.active::after { content: ""; position: absolute; left: 4px; right: 4px; bottom: -1px; height: 2px; background: rgba(255,255,255,0.7); border-radius: 2px; }
+.timeline-tabs .tab.active::after { content: ""; position: absolute; left: 10%; right: 10%; bottom: -1px; height: 3px; background: rgba(255,255,255,0.8); border-radius: 2px; animation: underlinePulse 800ms ease-out both; }
+@keyframes underlinePulse { 0% { left: 45%; right: 45%; opacity: 0; } 60% { left: 8%; right: 8%; opacity: 1; } 100% { left: 10%; right: 10%; opacity: 1; } }
 .timeline-panels { display: block; }
 .panel[hidden] { display: none !important; }
 
 /* Attach the timeline to the same underline */
 .panel { position: relative; padding: 24px 12px 8px 56px; border: 0; border-radius: 16px; background: transparent; box-shadow: none; }
 .panel::before { content: ""; position: absolute; left: 32px; top: -1px; bottom: 6px; width: 2px; background: linear-gradient(180deg, rgba(255,255,255,0.14), rgba(255,255,255,0.04)); }
+
+/* Poppy panel switch-in */
+.panel.active { animation: panelPop 260ms cubic-bezier(.2,.8,.2,1) both; }
+.panel.enter-left { animation: panelSlideLeft 320ms cubic-bezier(.2,.8,.2,1) both; }
+.panel.enter-right { animation: panelSlideRight 320ms cubic-bezier(.2,.8,.2,1) both; }
+@keyframes panelPop { from { opacity: 0; transform: translateY(16px) scale(.98); } to { opacity: 1; transform: translateY(0) scale(1); } }
+@keyframes panelSlideLeft { from { opacity: 0; transform: translateX(-26px) scale(.98); } to { opacity: 1; transform: translateX(0) scale(1); } }
+@keyframes panelSlideRight { from { opacity: 0; transform: translateX(26px) scale(.98); } to { opacity: 1; transform: translateX(0) scale(1); } }
+
+/* Stagger cards when panel just activated */
+.panel.just-activated .card { opacity: 0; transform: translateY(16px); }
+.panel.just-activated .card:nth-child(1) { animation: cardStagger 260ms 40ms ease-out forwards; }
+.panel.just-activated .card:nth-child(2) { animation: cardStagger 260ms 100ms ease-out forwards; }
+.panel.just-activated .card:nth-child(3) { animation: cardStagger 260ms 160ms ease-out forwards; }
+.panel.just-activated .card:nth-child(4) { animation: cardStagger 260ms 220ms ease-out forwards; }
+@keyframes cardStagger { to { opacity: 1; transform: translateY(0); } }
 
 .card { position: relative; padding: 8px 8px 12px 8px; border: 0; border-radius: 10px; background: transparent; box-shadow: none; transform: translateY(6px); opacity: 0; transition: transform 220ms ease, opacity 220ms ease, background 160ms ease; }
 .card.in-view { transform: translateY(0); opacity: 1; }
@@ -263,8 +281,8 @@ body {
 .contact-inner { max-width: 1040px; margin: 0 auto; width: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px; }
 .contact-title { margin: 0; font-size: 16px; color: var(--muted); letter-spacing: 0.02em; }
 .contact-actions { display: inline-flex; gap: 18px; align-items: center; }
-.icon-btn { width: 48px; height: 48px; display: inline-flex; align-items: center; justify-content: center; border-radius: 12px; border: none; background: transparent; transition: transform 120ms ease, opacity 120ms ease; }
-.icon-btn:hover { transform: translateY(-1px) scale(1.05); opacity: 1; }
+.icon-btn { width: 48px; height: 48px; display: inline-flex; align-items: center; justify-content: center; border-radius: 12px; border: none; background: transparent; transition: transform 150ms ease, opacity 120ms ease; }
+.icon-btn:hover { transform: translateY(-3px) scale(1.08); opacity: 1; }
 .icon-btn img { width: 28px; height: 28px; opacity: 0.95; object-fit: contain; }
 
 /* Ensure content isn't hidden behind bottom bar */
@@ -327,13 +345,14 @@ body {
   .project-card { max-width: 480px; }
 }
 
-/* Card enter animations */
-.card { animation: cardIn 600ms ease-out both; animation-delay: 140ms; }
-@keyframes cardIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+/* Card enter + hover */
+.card { animation: cardIn 600ms ease-out both; animation-delay: 140ms; transition: transform 200ms ease, background 160ms ease, box-shadow 160ms ease; }
+@keyframes cardIn { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: translateY(0); } }
+.card:hover { transform: translateY(-2px); background: rgba(255,255,255,0.03); box-shadow: 0 12px 26px rgba(0,0,0,0.38); }
 
 /* Slight glow on icons */
-.icon-slot img { filter: drop-shadow(0 2px 6px rgba(255,255,255,0.22)); transition: transform 160ms ease; }
-.icon-slot img:hover { transform: translateY(-1px) scale(1.04); }
+.icon-slot img { filter: drop-shadow(0 2px 6px rgba(255,255,255,0.22)); transition: transform 160ms ease, filter 160ms ease; }
+.icon-slot img:hover { transform: translateY(-2px) scale(1.08); filter: drop-shadow(0 4px 10px rgba(255,255,255,0.28)); }
 
 /* Remove Projects styles if any references remain (safe no-op now) */
 .projects-section, .projects, .projects-header, .projects-slider, .projects-track, .project-card, .proj-modal { display: none; }
