@@ -17,28 +17,29 @@
     <canvas id="bg-net" class="bg-net" aria-hidden="true"></canvas>
     <header id="top" class="site-hero">
       <div class="hero-inner">
-        <img src="Images/overview/pfp.png" alt="pfp" class="avatar" />
+        <div class="avatar-container">
+          <svg class="avatar-ring" viewBox="0 0 120 120">
+            <circle class="avatar-ring-bg" cx="60" cy="60" r="56" />
+            <circle class="avatar-ring-progress" cx="60" cy="60" r="56" />
+          </svg>
+          <img src="Images/overview/pfp.png" alt="pfp" class="avatar" />
+        </div>
         <div class="text">
           <h1 class="name">June Hobart</h1>
           <div class="meta">
-            <span class="location">
+            <span class="location meta-item">
               <img src="Images/overview/location.png" alt="" class="pin" />
-              <span>Madera, Portugal</span>
+              <span class="location-text" data-original="Madera, Portugal" data-hover="Maine, United States">Madera, Portugal</span>
             </span>
             <span class="bullet" aria-hidden="true">•</span>
-            <span class="role">Prompt Engineer</span>
+            <span class="role meta-item">Prompt Engineer</span>
             <span class="bullet" aria-hidden="true">•</span>
-            <span class="age"><span id="age"></span></span>
+            <span class="age meta-item"><span id="age" data-birthday="June 1, 2012"></span></span>
           </div>
         </div>
       </div>
     </header>
-    <nav class="toc" aria-label="Table of contents">
-      <a class="toc-link" href="#top"><span class="bar"></span><span class="label">Overview</span></a>
-      <a class="toc-link" href="#section-2"><span class="bar"></span><span class="label">Experience</span></a>
-      <a class="toc-link" href="#about"><span class="bar"></span><span class="label">About</span></a>
-      <a class="toc-link" href="#contact-end"><span class="bar"></span><span class="label">Contact</span></a>
-    </nav>
+    
     <main class="page-content">
       <section id="section-1" class="section"></section>
       <section id="section-2" class="section">
@@ -165,6 +166,35 @@
         </div>
       </section>
 
+      <section id="projects" class="section">
+        <div class="timeline projects-timeline">
+          <div class="timeline-header">
+            <h2 class="timeline-title">Projects</h2>
+          </div>
+          <div class="panel is-projects active" role="region">
+            <article class="card project-card-item" data-project="portfolio">
+              <div class="card-header">
+                <div class="dot"></div>
+                <div class="meta">
+                  <h3 class="title">Personal Portfolio</h3>
+                  <div class="sub">Modern portfolio with smooth scrolling and interactive effects</div>
+                </div>
+              </div>
+              <div class="project-cover">
+                <img src="Images/projects/portfolio/startofsite.png" alt="Portfolio" />
+              </div>
+              <div class="project-links-row">
+                <div class="project-links">
+                  <a class="project-link" href="https://github.com/junerhobart/portfolio" target="_blank" rel="noopener noreferrer" onclick="event.stopPropagation()" aria-label="GitHub">
+                    <img src="Images/footer/github.png" alt="GitHub" />
+                  </a>
+                </div>
+              </div>
+            </article>
+          </div>
+        </div>
+      </section>
+
       <footer id="contact" class="contact">
         <div class="contact-inner">
           <h2 class="contact-title">Contact</h2>
@@ -183,6 +213,18 @@
       </footer>
       <div id="contact-end"></div>
     </main>
+
+    <div id="project-modal" class="project-modal" hidden>
+      <div class="project-modal-backdrop"></div>
+      <div class="project-modal-dialog">
+        <button class="project-modal-close" aria-label="Close">&times;</button>
+        <div class="project-modal-content">
+          <h2 class="project-modal-title"></h2>
+          <div class="project-modal-body"></div>
+        </div>
+      </div>
+    </div>
+
     <script>
       (function() {
         // Always start at the top on reload/navigation
@@ -246,6 +288,12 @@
               if (hero && section) {
                 targetY = hero.offsetHeight + section.offsetTop;
               }
+            } else if (href === '#projects') {
+              const hero = document.querySelector('.site-hero');
+              const section = document.querySelector(href);
+              if (hero && section) {
+                targetY = hero.offsetHeight + section.offsetTop - 20;
+              }
             } else if (href === '#about') {
               const hero = document.querySelector('.site-hero');
               const section = document.querySelector(href);
@@ -289,6 +337,75 @@
           });
         }, { rootMargin: '0px 0px -10% 0px', threshold: 0 });
         container.querySelectorAll('.card').forEach(c => reveal.observe(c));
+      })();
+    </script>
+    <script>
+      // Project modal
+      (function(){
+        const modal = document.getElementById('project-modal');
+        const modalTitle = modal.querySelector('.project-modal-title');
+        const modalBody = modal.querySelector('.project-modal-body');
+        const closeBtn = modal.querySelector('.project-modal-close');
+        const backdrop = modal.querySelector('.project-modal-backdrop');
+
+        const projectData = {
+          'portfolio': {
+            title: 'Personal Portfolio',
+            content: `
+              <p>A simple personal site to introduce me and my work. One page, smooth scroll, clean dark theme.</p>
+              <div class="proj-gallery">
+                <img src="Images/projects/portfolio/startofsite.png" alt="Early build" />
+                <img src="Images/projects/portfolio/githubpage.png" alt="GitHub page" />
+              </div>
+              <p><b>Stack:</b> HTML, CSS, JavaScript</p>
+              <div class="project-modal-footer">
+                <a class="gh-link" href="https://github.com/junerhobart/portfolio" target="_blank" rel="noopener noreferrer" aria-label="GitHub"><img src="Images/footer/github.png" alt="GitHub" /></a>
+              </div>
+            `
+          }
+        };
+
+        function openModal(projectId){
+          const data = projectData[projectId];
+          if (!data) return;
+          modalTitle.textContent = data.title;
+          modalBody.innerHTML = data.content;
+          modal.hidden = false;
+          document.body.style.overflow = 'hidden';
+          // add GH button
+          let actions = modal.querySelector('.project-modal-actions');
+          if (!actions) {
+            actions = document.createElement('div');
+            actions.className = 'project-modal-actions';
+            const a = document.createElement('a');
+            a.href = 'https://github.com/junerhobart/portfolio';
+            a.target = '_blank';
+            a.rel = 'noopener noreferrer';
+            a.className = 'gh-link';
+            a.innerHTML = '<img src="Images/footer/github.png" alt="GitHub" />';
+            actions.appendChild(a);
+            modal.querySelector('.project-modal-dialog').appendChild(actions);
+          }
+        }
+
+        function closeModal(){
+          modal.hidden = true;
+          document.body.style.overflow = '';
+        }
+
+        document.querySelectorAll('.project-card-item').forEach(function(card){
+          card.addEventListener('click', function(){
+            const projectId = card.getAttribute('data-project');
+            openModal(projectId);
+          });
+        });
+
+        closeBtn.addEventListener('click', closeModal);
+        backdrop.addEventListener('click', closeModal);
+
+        document.addEventListener('keydown', function(e){
+          if (e.key === 'Escape' && !modal.hidden) closeModal();
+        });
       })();
     </script>
     <script>
@@ -378,6 +495,69 @@
         var diff = now - birth;
         var ageYears = Math.floor(diff / (365.2425 * 24 * 60 * 60 * 1000));
         el.textContent = ageYears + ' years old';
+      })();
+    </script>
+    <script>
+      // Hover effects for meta items
+      (function(){
+        const locationText = document.querySelector('.location-text');
+        if (locationText) {
+          const original = locationText.getAttribute('data-original');
+          const hover = locationText.getAttribute('data-hover');
+          locationText.addEventListener('mouseenter', function(){
+            locationText.textContent = hover;
+          });
+          locationText.addEventListener('mouseleave', function(){
+            locationText.textContent = original;
+          });
+        }
+
+        const ageEl = document.getElementById('age');
+        if (ageEl) {
+          const ageText = ageEl.textContent;
+          const birthday = ageEl.getAttribute('data-birthday');
+          ageEl.parentElement.addEventListener('mouseenter', function(){
+            ageEl.textContent = birthday;
+          });
+          ageEl.parentElement.addEventListener('mouseleave', function(){
+            ageEl.textContent = ageText;
+          });
+        }
+      })();
+    </script>
+    <script>
+      // Avatar reload on hold
+      (function(){
+        const container = document.querySelector('.avatar-container');
+        const progress = document.querySelector('.avatar-ring-progress');
+        if (!container || !progress) return;
+        
+        let holdTimeout = null;
+        let isHolding = false;
+
+        function startHold(){
+          if (isHolding) return;
+          isHolding = true;
+          progress.style.transition = 'stroke-dashoffset 10s linear';
+          progress.style.strokeDashoffset = '0';
+          holdTimeout = setTimeout(function(){
+            window.location.reload();
+          }, 10000);
+        }
+
+        function cancelHold(){
+          if (!isHolding) return;
+          isHolding = false;
+          clearTimeout(holdTimeout);
+          progress.style.transition = 'stroke-dashoffset 0.3s ease';
+          progress.style.strokeDashoffset = '351.858';
+        }
+
+        container.addEventListener('mouseenter', startHold);
+        container.addEventListener('mouseleave', cancelHold);
+        container.addEventListener('mousedown', function(e){
+          e.preventDefault();
+        });
       })();
     </script>
     <script>
